@@ -11,7 +11,9 @@ class ValidateMiddleware {
           formattedErrors[err.path] = err.msg;
         }
       });
-      return res.status(400).json({ errors: formattedErrors });
+      return res
+        .status(400)
+        .json({ message: 'Not enough information!', errors: formattedErrors });
     }
     next();
   }

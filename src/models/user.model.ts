@@ -1,27 +1,88 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
+import { History } from './history.model';
 
 type UserAttributes = {
-  id: number;
-  name: string;
+  user_id: number;
+  username: string;
+  password: string;
+  email: string;
+  birthday: string;
+  isVerified: boolean;
+  isAdmin: boolean;
+  isSale: boolean;
+  isManager: boolean;
+  isAccountant: boolean;
+  isViewer: boolean;
 };
-type UserCreationAttributes = Optional<UserAttributes, 'id'>;
-
+type UserCreationAttributes = Optional<UserAttributes, 'user_id'>;
 export class User extends Model<UserAttributes, UserCreationAttributes> {
-  declare id: number;
-  declare name: string;
+  declare user_id: number;
+  declare username: string;
+  declare password: string;
+  declare email: string;
+  declare birthday: string;
+  declare isVerified: boolean;
+  declare isAdmin: boolean;
+  declare isSale: boolean;
+  declare isManager: boolean;
+  declare isAccountant: boolean;
+  declare isViewer: boolean;
 }
 
 User.init(
   {
-    id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+    user_id: {
+      type: DataTypes.BIGINT.UNSIGNED,
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    username: {
       type: new DataTypes.STRING(128),
       allowNull: false,
+    },
+    password: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    email: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    isVerified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    birthday: {
+      type: new DataTypes.STRING(128),
+      allowNull: true,
+      defaultValue: null,
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    isSale: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    isManager: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    isAccountant: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    isViewer: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: true,
     },
   },
   {
@@ -29,3 +90,4 @@ User.init(
     sequelize,
   }
 );
+User.hasMany(History, { foreignKey: 'user_id' });
