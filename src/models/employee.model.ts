@@ -14,7 +14,11 @@ export type EmployeeAttributes = {
   manager_id: number;
   department_id: number;
 };
-export class Employee extends Model<EmployeeAttributes> {
+
+export class Employee extends Model<
+  EmployeeAttributes,
+  Omit<EmployeeAttributes, 'employee_id'>
+> {
   declare employee_id: number;
   declare first_name: string;
   declare last_name: string;
@@ -33,39 +37,79 @@ Employee.init(
     employee_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
     },
     first_name: {
       type: new DataTypes.CHAR(20),
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [1, 20],
+      },
     },
     last_name: {
       type: new DataTypes.CHAR(25),
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [1, 25],
+      },
     },
     email: {
       type: new DataTypes.CHAR(25),
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: true,
+      },
     },
     phone_number: {
       type: new DataTypes.CHAR(20),
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [1, 20],
+      },
     },
     hire_date: {
       type: new DataTypes.DATE(),
+      allowNull: false,
     },
     job_id: {
       type: new DataTypes.CHAR(128),
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
     salary: {
       type: DataTypes.NUMBER.UNSIGNED,
+      allowNull: false,
+      validate: {
+        isNumeric: true,
+      },
     },
     commission_pct: {
       type: new DataTypes.STRING(128),
+      allowNull: true,
+      validate: {
+        isNumeric: true,
+      },
     },
     manager_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      validate: {
+        isInt: true,
+      },
     },
     department_id: {
       type: DataTypes.INTEGER.UNSIGNED,
       allowNull: false,
+      validate: {
+        isInt: true,
+      },
     },
   },
   {
