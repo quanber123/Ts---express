@@ -1,8 +1,9 @@
 import { Express } from 'express';
+import { JwtPayload } from 'jsonwebtoken';
 declare global {
   namespace Express {
     interface Request {
-      decoded?: any;
+      decoded?: JwtPayload;
     }
   }
 }

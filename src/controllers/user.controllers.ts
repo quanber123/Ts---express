@@ -2,10 +2,11 @@ import { Request, Response } from 'express';
 import { User } from '../models/user.model';
 import bcrypt from '../utils/bcrypt';
 import { signToken } from '../utils/token';
+import { JwtPayload } from 'jsonwebtoken';
 
 class UserController {
   async getUser(req: Request, res: Response) {
-    const user = req.decoded;
+    const user = (req as any)?.decoded as JwtPayload;
     try {
       const existedUser = await User.findByPk(user?.user_id);
       if (existedUser) return res.status(200).json(existedUser);

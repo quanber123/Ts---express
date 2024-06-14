@@ -27,6 +27,7 @@ User.init(
     user_id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
+      allowNull: false,
       primaryKey: true,
     },
     username: {
@@ -62,4 +63,3 @@ User.init(
     sequelize,
   }
 );
-User.hasMany(History, { foreignKey: 'user_id' });

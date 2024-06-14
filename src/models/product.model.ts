@@ -1,8 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
-import { Category } from './category.model';
 import { User } from './user.model';
-import { Variant } from './variant.model';
 type ProductAttributes = {
   product_id: number;
   name: string;
@@ -33,6 +31,7 @@ Product.init(
       type: DataTypes.BIGINT,
       autoIncrement: true,
       allowNull: false,
+      primaryKey: true,
     },
     name: {
       type: new DataTypes.STRING(128),
@@ -43,15 +42,15 @@ Product.init(
       allowNull: false,
     },
     images: {
-      type: DataTypes.ARRAY,
+      type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: false,
     },
     price: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.DECIMAL(1000),
       allowNull: false,
     },
     formatPrice: {
-      type: new DataTypes.STRING(),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     published: {
@@ -73,11 +72,5 @@ Product.init(
     sequelize,
   }
 );
-
-Product.belongsToMany(Category, {
-  through: 'product_category',
-  as: 'categories',
-});
-Product.belongsToMany(Variant, { through: 'product_variant', as: 'variants' });
 
 Product.belongsTo(User, { foreignKey: 'created_by' });

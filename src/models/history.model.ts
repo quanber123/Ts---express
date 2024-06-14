@@ -35,6 +35,10 @@ History.init(
     userId: {
       type: DataTypes.BIGINT,
       allowNull: false,
+      references: {
+        model: User,
+        key: 'user_id',
+      },
     },
     target_id: {
       type: DataTypes.BIGINT,

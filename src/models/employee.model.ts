@@ -84,7 +84,7 @@ Employee.init(
       },
     },
     salary: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.DECIMAL(1000),
       allowNull: false,
       validate: {
         isNumeric: true,

@@ -34,7 +34,7 @@ class Auth {
           });
         }
         if (decoded) {
-          req.decoded = decoded as JwtPayload | User;
+          (req as any).decoded = decoded as JwtPayload | User;
           next();
         }
       }

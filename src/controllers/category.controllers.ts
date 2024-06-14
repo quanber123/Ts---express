@@ -4,7 +4,7 @@ import { formatDiacritics, totalPage } from '../utils/helper';
 import { Op } from 'sequelize';
 import { QueryParams } from '../types/types';
 import { History } from '../models/history.model';
-import { User } from '../models/user.model';
+import { JwtPayload } from 'jsonwebtoken';
 class CategoryController {
   async getCategories(req: Request, res: Response) {
     const { page, search } = req.query;
@@ -39,7 +39,7 @@ class CategoryController {
     }
   }
   async createCategory(req: Request, res: Response) {
-    const user = req.decoded;
+    const user = (req as any)?.decoded as JwtPayload;
     const { name } = req.body;
     try {
       const existedCategory = await Category.findOne({
@@ -98,7 +98,7 @@ class CategoryController {
     }
   }
   async deleteCategory(req: Request, res: Response) {
-    const user = req.decoded;
+    const user = (req as any)?.decoded as JwtPayload;
     const { id } = req.params;
     try {
       const deletedCategory = await Category.destroy({
