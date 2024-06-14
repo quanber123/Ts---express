@@ -10,3 +10,4 @@ routerUser
   .get(authMiddleware.ValidateUser, userControllers.getUser);
 routerUser.route('/api/register').post(userControllers.register);
 routerUser.route('/api/login').post(userControllers.login);
+routerUser.route('/api/logout').post(userControllers.logout);

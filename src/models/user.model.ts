@@ -8,8 +8,9 @@ type UserAttributes = {
   slug: string;
   password: string;
   email: string;
-  birthday: string;
-  isVerified: boolean;
+  avatar: string | null;
+  birthday?: string;
+  isVerified?: boolean;
 };
 type UserCreationAttributes = Optional<UserAttributes, 'user_id'>;
 export class User extends Model<UserAttributes, UserCreationAttributes> {
@@ -18,8 +19,9 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare slug: string;
   declare password: string;
   declare email: string;
-  declare birthday: string;
-  declare isVerified: boolean;
+  declare avatar: string | null;
+  declare birthday?: string;
+  declare isVerified?: boolean;
 }
 
 User.init(
@@ -46,9 +48,14 @@ User.init(
       type: new DataTypes.STRING(128),
       allowNull: false,
     },
+    avatar: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
+    },
     isVerified: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
+      allowNull: true,
       defaultValue: false,
     },
     birthday: {

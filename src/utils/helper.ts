@@ -4,7 +4,7 @@ export const totalPage = (totalItems: number, limit: number) => {
 };
 
 export const formatDiacritics = (str: string) => {
-  return diacritics.remove(str).replace(' ', '-');
+  return diacritics.remove(str).replace(/\s+/g, '-');
 };
 
 export const formatRegex = (str: string) => {
