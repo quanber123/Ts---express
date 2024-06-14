@@ -66,7 +66,6 @@ class CategoryController {
     }
   }
   async updateCategory(req: Request, res: Response) {
-    const user = req.decoded;
     const { name } = req.body;
     const { id } = req.params;
     try {
