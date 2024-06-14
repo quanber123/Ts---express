@@ -2,6 +2,8 @@ import express, { Express, Request, Response } from 'express';
 import { config } from 'dotenv';
 import { sequelize } from './config/postgresql';
 import { routerEmployee } from './routes/employee.router';
+import { routerCategory } from './routes/category.router';
+import { routerUser } from './routes/user.router';
 config();
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -13,7 +15,9 @@ const port = process.env.PORT || 3000;
     throw Error('Failed to connect postgres');
   }
 })();
+app.use(routerUser);
 app.use(routerEmployee);
+app.use(routerCategory);
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
 });

@@ -5,6 +5,7 @@ import { History } from './history.model';
 type UserAttributes = {
   user_id: number;
   username: string;
+  slug: string;
   password: string;
   email: string;
   birthday: string;
@@ -19,6 +20,7 @@ type UserCreationAttributes = Optional<UserAttributes, 'user_id'>;
 export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare user_id: number;
   declare username: string;
+  declare slug: string;
   declare password: string;
   declare email: string;
   declare birthday: string;
@@ -38,6 +40,10 @@ User.init(
       primaryKey: true,
     },
     username: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    slug: {
       type: new DataTypes.STRING(128),
       allowNull: false,
     },

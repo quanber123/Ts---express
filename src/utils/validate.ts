@@ -31,6 +31,11 @@ class ValidationRules {
         .withMessage('Department ID must be an integer'),
     ];
   };
+  categoryValidateRules = (): ValidationChain[] => {
+    return [
+      body('name').notEmpty().withMessage('Nội dung tên không được để trống!'),
+    ];
+  };
 }
 
 export default new ValidationRules();

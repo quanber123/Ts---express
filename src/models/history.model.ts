@@ -1,17 +1,20 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
 import { User } from './user.model';
 type HistoryAttributes = {
   history_id: number;
-  action: string;
+  action: 'Tạo' | 'Cập nhật' | 'Sửa' | 'Xóa';
   user_id: number;
   target_id: number;
   details: string;
 };
 
-export class History extends Model<HistoryAttributes> {
+export class History extends Model<
+  HistoryAttributes,
+  Optional<HistoryAttributes, 'history_id'>
+> {
   declare history_id: number;
-  declare action: string;
+  declare action: 'Tạo' | 'Cập nhật' | 'Sửa' | 'Xóa';
   declare user_id: number;
   declare target_id: number;
   declare details: string;

@@ -1,12 +1,17 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
+import { Product } from './product.model';
+import { ProductTag } from './relations/product.tag.model';
 type TagAttributes = {
   tag_id: number;
   name: string;
   slug: string;
 };
 
-export class Tag extends Model<TagAttributes> {
+export class Tag extends Model<
+  TagAttributes,
+  Optional<TagAttributes, 'tag_id'>
+> {
   declare tag_id: number;
   declare name: string;
   declare slug: string;

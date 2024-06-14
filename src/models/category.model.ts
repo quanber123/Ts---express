@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
 import { Product } from './product.model';
 type CategoryAttributes = {
@@ -7,11 +7,14 @@ type CategoryAttributes = {
   slug: string;
 };
 
-export class Category extends Model<CategoryAttributes> {
+export class Category extends Model<
+  CategoryAttributes,
+  Optional<CategoryAttributes, 'category_id'>
+> {
   declare category_id: number;
   declare name: string;
   declare slug: string;
-}
+} 
 
 Category.init(
   {

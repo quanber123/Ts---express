@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
 
 export type EmployeeAttributes = {
@@ -17,7 +17,7 @@ export type EmployeeAttributes = {
 
 export class Employee extends Model<
   EmployeeAttributes,
-  Omit<EmployeeAttributes, 'employee_id'>
+  Optional<EmployeeAttributes, 'employee_id'>
 > {
   declare employee_id: number;
   declare first_name: string;

@@ -1,4 +1,4 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
 import { Product } from './product.model';
 
@@ -11,7 +11,10 @@ type VariantAttributes = {
   availableQuantity: number;
   inStock: number;
 };
-export class Variant extends Model<VariantAttributes> {
+export class Variant extends Model<
+  VariantAttributes,
+  Optional<VariantAttributes, 'variant_id'>
+> {
   declare variant_id: number;
   declare size: string;
   declare color: string;
