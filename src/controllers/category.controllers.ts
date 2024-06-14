@@ -56,7 +56,7 @@ class CategoryController {
       if (createdCategory) {
         await History.create({
           action: 'Tạo',
-          user_id: user?.user_id,
+          userId: user?.user_id,
           target_id: createdCategory.category_id,
           details: `${user?.user_id} đã tạo danh mục ${createdCategory.category_id}`,
         });
@@ -109,7 +109,7 @@ class CategoryController {
       if (deletedCategory) {
         await History.create({
           action: 'Xóa',
-          user_id: user?.user_id,
+          userId: user?.user_id,
           target_id: Number(id),
           details: `${user?.user_id} đã xóa danh mục ${id}`,
         });
