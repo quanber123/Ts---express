@@ -4,6 +4,7 @@ import { formatDiacritics, totalPage } from '../utils/helper';
 import { Op } from 'sequelize';
 import { QueryParams } from '../types/types';
 import { History } from '../models/history.model';
+import { User } from '../models/user.model';
 class CategoryController {
   async getCategories(req: Request, res: Response) {
     const { page, search } = req.query;

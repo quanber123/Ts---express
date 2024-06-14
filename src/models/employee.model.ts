@@ -35,7 +35,7 @@ export class Employee extends Model<
 Employee.init(
   {
     employee_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
@@ -84,7 +84,7 @@ Employee.init(
       },
     },
     salary: {
-      type: DataTypes.NUMBER.UNSIGNED,
+      type: DataTypes.NUMBER,
       allowNull: false,
       validate: {
         isNumeric: true,
@@ -98,14 +98,14 @@ Employee.init(
       },
     },
     manager_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
       validate: {
         isInt: true,
       },
     },
     department_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
       validate: {
         isInt: true,

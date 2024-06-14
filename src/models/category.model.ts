@@ -14,12 +14,12 @@ export class Category extends Model<
   declare category_id: number;
   declare name: string;
   declare slug: string;
-} 
+}
 
 Category.init(
   {
     category_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,

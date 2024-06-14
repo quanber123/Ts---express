@@ -1,10 +1,8 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
-import { Tag } from './tag.model';
 import { Category } from './category.model';
-import { Variant } from './variants.model';
 import { User } from './user.model';
-import { ProductTag } from './relations/product.tag.model';
+import { Variant } from './variant.model';
 type ProductAttributes = {
   product_id: number;
   name: string;
@@ -32,7 +30,7 @@ export class Product extends Model<
 Product.init(
   {
     product_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
       allowNull: false,
     },
@@ -49,7 +47,7 @@ Product.init(
       allowNull: false,
     },
     price: {
-      type: DataTypes.NUMBER.UNSIGNED,
+      type: DataTypes.NUMBER,
       allowNull: false,
     },
     formatPrice: {
@@ -61,7 +59,7 @@ Product.init(
       allowNull: false,
     },
     created_by: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
       references: {
         model: User,

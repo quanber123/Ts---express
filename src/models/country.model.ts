@@ -17,7 +17,7 @@ export class Country extends Model<CountryAttributes> {
 Country.init(
   {
     department_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
       primaryKey: true,
     },
@@ -26,11 +26,11 @@ Country.init(
       allowNull: false,
     },
     manager_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     location_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
   },

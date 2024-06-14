@@ -2,68 +2,74 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
 import { History } from './history.model';
 
-type UserAttributes = {
+interface UserAttributes {
   user_id: number;
   username: string;
   slug: string;
   password: string;
   email: string;
-  birthday: string;
+  birthday?: string | null;
   isVerified: boolean;
   isAdmin: boolean;
   isSale: boolean;
   isManager: boolean;
   isAccountant: boolean;
   isViewer: boolean;
-};
-type UserCreationAttributes = Optional<UserAttributes, 'user_id'>;
-export class User extends Model<UserAttributes, UserCreationAttributes> {
-  declare user_id: number;
-  declare username: string;
-  declare slug: string;
-  declare password: string;
-  declare email: string;
-  declare birthday: string;
-  declare isVerified: boolean;
-  declare isAdmin: boolean;
-  declare isSale: boolean;
-  declare isManager: boolean;
-  declare isAccountant: boolean;
-  declare isViewer: boolean;
+}
+
+interface UserCreationAttributes extends Optional<UserAttributes, 'user_id'> {}
+
+export class User
+  extends Model<UserAttributes, UserCreationAttributes>
+  implements UserAttributes
+{
+  public user_id!: number;
+  public username!: string;
+  public slug!: string;
+  public password!: string;
+  public email!: string;
+  public birthday?: string | null;
+  public isVerified!: boolean;
+  public isAdmin!: boolean;
+  public isSale!: boolean;
+  public isManager!: boolean;
+  public isAccountant!: boolean;
+  public isViewer!: boolean;
+
+  // You can add class level methods and associations here
 }
 
 User.init(
   {
     user_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true,
     },
     username: {
-      type: new DataTypes.STRING(128),
+      type: DataTypes.STRING(128),
       allowNull: false,
     },
     slug: {
-      type: new DataTypes.STRING(128),
+      type: DataTypes.STRING(128),
       allowNull: false,
     },
     password: {
-      type: new DataTypes.STRING(128),
+      type: DataTypes.STRING(128),
       allowNull: false,
     },
     email: {
-      type: new DataTypes.STRING(128),
+      type: DataTypes.STRING(128),
       allowNull: false,
+    },
+    birthday: {
+      type: DataTypes.STRING(128),
+      allowNull: true,
     },
     isVerified: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
-    },
-    birthday: {
-      type: new DataTypes.STRING(128),
-      allowNull: true,
-      defaultValue: null,
     },
     isAdmin: {
       type: DataTypes.BOOLEAN,
@@ -96,4 +102,5 @@ User.init(
     sequelize,
   }
 );
+
 User.hasMany(History, { foreignKey: 'user_id' });

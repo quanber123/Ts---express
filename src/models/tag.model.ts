@@ -20,7 +20,7 @@ export class Tag extends Model<
 Tag.init(
   {
     tag_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
       allowNull: false,
       primaryKey: true,

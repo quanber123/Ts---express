@@ -3,8 +3,8 @@ import { sequelize } from '../../config/postgresql';
 import { Product } from '../product.model';
 import { Tag } from '../tag.model';
 type ProductTagAttributes = {
-  product_id: string | number;
-  tag_id: string | number;
+  productId: string | number;
+  tagId: string | number;
 };
 
 export class ProductTag extends Model<ProductTagAttributes> {
@@ -14,27 +14,26 @@ export class ProductTag extends Model<ProductTagAttributes> {
 
 ProductTag.init(
   {
-    product_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+    productId: {
+      type: DataTypes.BIGINT,
       references: {
         model: Product,
         key: 'product_id',
       },
-      primaryKey: true,
     },
-    tag_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+    tagId: {
+      type: DataTypes.BIGINT,
       references: {
         model: Tag,
         key: 'tag_id',
       },
-      primaryKey: true,
     },
   },
   {
     tableName: 'product_tags',
+    timestamps: true,
     sequelize,
   }
 );
-Product.belongsToMany(Tag, { through: ProductTag, foreignKey: 'product_id' });
-Tag.belongsToMany(Product, { through: ProductTag, foreignKey: 'tag_id' });
+Product.belongsToMany(Tag, { through: ProductTag });
+Tag.belongsToMany(Product, { through: ProductTag });

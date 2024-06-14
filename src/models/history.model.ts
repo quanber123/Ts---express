@@ -1,31 +1,38 @@
+// src/models/history.model.ts
+
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
 import { User } from './user.model';
-type HistoryAttributes = {
+
+interface HistoryAttributes {
   history_id: number;
   action: 'Tạo' | 'Cập nhật' | 'Sửa' | 'Xóa';
   user_id: number;
   target_id: number;
-  details: string;
-};
+  details?: string;
+}
 
-export class History extends Model<
-  HistoryAttributes,
-  Optional<HistoryAttributes, 'history_id'>
-> {
-  declare history_id: number;
-  declare action: 'Tạo' | 'Cập nhật' | 'Sửa' | 'Xóa';
-  declare user_id: number;
-  declare target_id: number;
-  declare details: string;
+interface HistoryCreationAttributes
+  extends Optional<HistoryAttributes, 'history_id'> {}
+
+export class History
+  extends Model<HistoryAttributes, HistoryCreationAttributes>
+  implements HistoryAttributes
+{
+  public history_id!: number;
+  public action!: 'Tạo' | 'Cập nhật' | 'Sửa' | 'Xóa';
+  public user_id!: number;
+  public target_id!: number;
+  public details?: string;
+
+  // You can add class level methods and associations here
 }
 
 History.init(
   {
     history_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       autoIncrement: true,
-      allowNull: false,
       primaryKey: true,
     },
     action: {
@@ -33,15 +40,15 @@ History.init(
       allowNull: false,
     },
     user_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     target_id: {
-      type: DataTypes.BIGINT.UNSIGNED,
+      type: DataTypes.BIGINT,
       allowNull: false,
     },
     details: {
-      type: new DataTypes.STRING(1024),
+      type: DataTypes.STRING(1024),
       allowNull: true,
     },
   },
@@ -51,4 +58,7 @@ History.init(
     sequelize,
   }
 );
+
 History.belongsTo(User, { foreignKey: 'user_id' });
+
+export default History;
