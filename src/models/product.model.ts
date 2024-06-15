@@ -72,3 +72,5 @@ Product.init(
     sequelize,
   }
 );
+
+Product.belongsTo(User, { foreignKey: 'created_by' });
