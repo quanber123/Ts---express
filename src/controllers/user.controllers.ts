@@ -17,6 +17,7 @@ class UserController {
         include: [
           {
             model: Role,
+            as: 'roleInfo',
           },
         ],
       });
