@@ -4,12 +4,22 @@ import bcrypt from '../utils/bcrypt';
 import { blackList, signToken } from '../utils/token';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { formatDiacritics } from '../utils/helper';
+import { Role } from '../models/role.model';
 
 class UserController {
   async getUser(req: Request, res: Response) {
     const user = (req as any)?.decoded as JwtPayload;
     try {
-      const existedUser = await User.findByPk(user?.user_id);
+      const existedUser = await User.findOne({
+        where: {
+          user_id: user?.user_id,
+        },
+        include: [
+          {
+            model: Role,
+          },
+        ],
+      });
       if (existedUser) return res.status(200).json(existedUser);
       return res.status(404).json({ message: 'Không tìm thấy người dùng' });
     } catch (error: any) {
@@ -32,6 +42,7 @@ class UserController {
         username: username,
         slug: formatDiacritics(username),
         password: hashedPassword,
+        role: 0,
       });
       return res.status(200).json({ message: 'Tạo tài khoản thành công!' });
     } catch (error: any) {
@@ -109,6 +120,13 @@ class UserController {
         }
       );
     } catch (error) {}
+  }
+  async updateProfile(req: Request, res: Response) {
+    const user = (req as any)?.decoded as JwtPayload;
+    try {
+    } catch (error: any) {
+      return res.status(500).json({ message: error?.message });
+    }
   }
 }
 

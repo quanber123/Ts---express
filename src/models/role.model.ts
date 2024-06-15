@@ -1,25 +1,25 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
-type TagAttributes = {
-  tag_id: number;
+import { User } from './user.model';
+type RoleAttributes = {
+  role_id: number;
   name: string;
   slug: string;
 };
 
-export class Tag extends Model<
-  TagAttributes,
-  Optional<TagAttributes, 'tag_id'>
+export class Role extends Model<
+  RoleAttributes,
+  Optional<RoleAttributes, 'role_id'>
 > {
-  declare tag_id: number;
+  declare role_id: number;
   declare name: string;
   declare slug: string;
 }
 
-Tag.init(
+Role.init(
   {
-    tag_id: {
+    role_id: {
       type: DataTypes.BIGINT,
-      autoIncrement: true,
       allowNull: false,
       primaryKey: true,
     },
@@ -33,7 +33,7 @@ Tag.init(
     },
   },
   {
-    tableName: 'tags',
+    tableName: 'roles',
     timestamps: true,
     sequelize,
   }

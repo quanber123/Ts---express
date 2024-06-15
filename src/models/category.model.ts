@@ -39,5 +39,3 @@ Category.init(
     sequelize,
   }
 );
-
-Category.belongsToMany(Product, { through: 'product_category' });

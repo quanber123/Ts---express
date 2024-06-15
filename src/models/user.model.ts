@@ -1,16 +1,16 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
-import { History } from './history.model';
-
+import { Role } from './role.model';
 type UserAttributes = {
   user_id: number;
   username: string;
   slug: string;
   password: string;
   email: string;
-  avatar: string | null;
+  avatar?: string | null;
   birthday?: string;
   isVerified?: boolean;
+  role: string | number;
 };
 type UserCreationAttributes = Optional<UserAttributes, 'user_id'>;
 export class User extends Model<UserAttributes, UserCreationAttributes> {
@@ -19,7 +19,7 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare slug: string;
   declare password: string;
   declare email: string;
-  declare avatar: string | null;
+  declare avatar?: string | null;
   declare birthday?: string;
   declare isVerified?: boolean;
 }
@@ -62,6 +62,14 @@ User.init(
       type: new DataTypes.STRING(128),
       allowNull: true,
       defaultValue: null,
+    },
+    role: {
+      type: DataTypes.BIGINT,
+      allowNull: false,
+      references: {
+        model: Role,
+        key: 'role_id',
+      },
     },
   },
   {
