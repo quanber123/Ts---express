@@ -4,7 +4,7 @@ import { User } from './user.model';
 type HistoryAttributes = {
   history_id: number;
   action: 'Tạo' | 'Cập nhật' | 'Sửa' | 'Xóa';
-  userId: number;
+  userId: number | null;
   target_id: number;
   details: string;
 };
@@ -15,7 +15,7 @@ export class History extends Model<
 > {
   declare history_id: number;
   declare action: 'Tạo' | 'Cập nhật' | 'Sửa' | 'Xóa';
-  declare userId: number;
+  declare userId: number | null;
   declare target_id: number;
   declare details: string;
 }
@@ -34,11 +34,12 @@ History.init(
     },
     userId: {
       type: DataTypes.BIGINT,
-      allowNull: false,
+      allowNull: true,
       references: {
-        model: User,
+        model: 'users',
         key: 'user_id',
       },
+      onDelete: 'SET NULL',
     },
     target_id: {
       type: DataTypes.BIGINT,

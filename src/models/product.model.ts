@@ -9,7 +9,7 @@ type ProductAttributes = {
   price: number;
   formatPrice: string;
   published: boolean;
-  created_by: string | number;
+  created_by: string | number | null;
 };
 
 export class Product extends Model<
@@ -22,7 +22,7 @@ export class Product extends Model<
   declare images: string[];
   declare price: number;
   declare published: boolean;
-  declare created_by: string | number;
+  declare created_by: string | number | null;
 }
 
 Product.init(
@@ -61,9 +61,10 @@ Product.init(
       type: DataTypes.BIGINT,
       allowNull: false,
       references: {
-        model: User,
+        model: 'users',
         key: 'user_id',
       },
+      onDelete: 'SET NULL',
     },
   },
   {

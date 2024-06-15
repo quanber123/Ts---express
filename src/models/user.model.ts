@@ -10,7 +10,7 @@ type UserAttributes = {
   avatar?: string | null;
   birthday?: string;
   isVerified?: boolean;
-  role: string | number;
+  role: string | number | null;
 };
 type UserCreationAttributes = Optional<UserAttributes, 'user_id'>;
 export class User extends Model<UserAttributes, UserCreationAttributes> {
@@ -67,9 +67,10 @@ User.init(
       type: DataTypes.BIGINT,
       allowNull: true,
       references: {
-        model: Role,
+        model: 'roles',
         key: 'role_id',
       },
+      onDelete: 'SET NULL',
     },
   },
   {
