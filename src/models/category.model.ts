@@ -1,6 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
-import { Product } from './product.model';
 type CategoryAttributes = {
   category_id: number;
   name: string;

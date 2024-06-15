@@ -1,6 +1,5 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
-import { User } from './user.model';
 type RoleAttributes = {
   role_id: number;
   name: string;
