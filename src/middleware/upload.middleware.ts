@@ -29,8 +29,8 @@ class UploadService {
     if (allowedImageExtensions.includes(fileExtension)) {
       const uploadPath =
         process.env.ENVIRONMENT === 'production'
-          ? 'public/uploads'
-          : 'public/test';
+          ? 'src/public/uploads'
+          : 'src/public/test';
       // Create directory if it doesn't exist
       fs.mkdirSync(uploadPath, { recursive: true });
       cb(null, uploadPath);

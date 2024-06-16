@@ -1,18 +1,20 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../config/postgresql';
-import { Product } from './product.model';
+import { Variant } from './variant.model';
 
-type VariantAttributes = {
-  variant_id: number;
-  productId: number;
-  quantity: number;
+type VariantDetailsAttributes = {
+  variant_details_id: number;
+  variantId: number;
+  name: string;
+  value: string;
+  slug: string;
   created_at: string;
   updated_at: string;
 };
 
-export class Variant extends Model<
-  VariantAttributes,
-  Optional<VariantAttributes, 'variant_id'>
+export class VariantDetails extends Model<
+  VariantDetailsAttributes,
+  Optional<VariantDetailsAttributes, 'variant_details_id'>
 > {
   declare variant_id: number;
   declare productId: number;
@@ -21,25 +23,33 @@ export class Variant extends Model<
   declare updated_at: string;
 }
 
-Variant.init(
+VariantDetails.init(
   {
-    variant_id: {
+    variant_details_id: {
       type: DataTypes.BIGINT,
       autoIncrement: true,
       primaryKey: true,
       allowNull: false,
     },
-    productId: {
+    variantId: {
       type: DataTypes.BIGINT,
       allowNull: true,
       references: {
-        model: 'products',
-        key: 'product_id',
+        model: 'variants',
+        key: 'variant_id',
       },
       onDelete: 'SET NULL',
     },
-    quantity: {
-      type: DataTypes.DECIMAL(10),
+    name: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    value: {
+      type: new DataTypes.STRING(24),
+      allowNull: false,
+    },
+    slug: {
+      type: new DataTypes.STRING(24),
       allowNull: false,
     },
     created_at: {
@@ -54,10 +64,13 @@ Variant.init(
     },
   },
   {
-    tableName: 'variants',
+    tableName: 'variants_details',
     timestamps: false,
     sequelize,
   }
 );
 
-Variant.belongsTo(Product, { foreignKey: 'productId', as: 'variantInfo' });
+VariantDetails.belongsTo(Variant, {
+  foreignKey: 'variantId',
+  as: 'variantDetailsInfo',
+});
