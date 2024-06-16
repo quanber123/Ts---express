@@ -32,6 +32,7 @@ ProductVariant.init(
   },
   {
     tableName: 'product_variants',
+    timestamps: true,
     sequelize,
   }
 );

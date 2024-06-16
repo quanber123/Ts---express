@@ -1,6 +1,11 @@
 import { Request, Response } from 'express';
 import { Category } from './../models/category.model';
-import { formatDiacritics, formatTime, totalPage } from '../utils/helper';
+import {
+  formatDiacritics,
+  formatRegex,
+  formatTime,
+  totalPage,
+} from '../utils/helper';
 import { Op } from 'sequelize';
 import { QueryParams } from '../types/types';
 import { History } from '../models/history.model';
@@ -20,8 +25,10 @@ class CategoryController {
               name: {
                 [Op.like]: `%${search}%`,
               },
+            },
+            {
               slug: {
-                [Op.like]: `%${search}%`,
+                [Op.like]: `%${formatDiacritics(search as string)}%`,
               },
             },
           ],
@@ -118,7 +125,7 @@ class CategoryController {
           action: 'Xóa',
           userId: user?.user_id,
           target_id: Number(id),
-          details: `${user?.user_id} đã xóa danh mục ${id}`,
+          details: `UserId:${user?.user_id} đã xóa danh mục Id:${id}`,
           created_at: formatTime(new Date().toString()),
         });
         return res.status(200).json({ message: 'Xóa danh mục thành công!' });
