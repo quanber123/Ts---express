@@ -6,6 +6,11 @@ class ValidationRules {
       body('name').notEmpty().withMessage('Nội dung tên không được để trống!'),
     ];
   };
+  tagValidateRules = (): ValidationChain[] => {
+    return [
+      body('name').notEmpty().withMessage('Nội dung tên không được để trống!'),
+    ];
+  };
 }
 
 export default new ValidationRules();

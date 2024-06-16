@@ -1,21 +1,15 @@
 import { Request, Response } from 'express';
 import { Category } from './../models/category.model';
-import {
-  formatDiacritics,
-  formatRegex,
-  formatTime,
-  totalPage,
-} from '../utils/helper';
+import { formatDiacritics, formatTime, totalPage } from '../utils/helper';
 import { Op } from 'sequelize';
 import { QueryParams } from '../types/types';
 import { History } from '../models/history.model';
-import { JwtPayload } from 'jsonwebtoken';
 import { User } from '../models/user.model';
 class CategoryController {
   async getCategories(req: Request, res: Response) {
-    const { page, search } = req.query;
-    const limit = 10;
-    const offset = (page ? Number(page) - 1 : 0) * limit;
+    const { page, search, offset } = req.query;
+    const limit = Number(offset) ? Number(offset) : 10;
+    const skip = (page ? Number(page) - 1 : 0) * limit;
     let query = {} as QueryParams;
     try {
       if (search) {
@@ -36,12 +30,12 @@ class CategoryController {
       }
       const { rows, count } = await Category.findAndCountAll({
         where: query,
-        offset: offset,
+        offset: skip,
         limit: limit,
       });
       return res
         .status(200)
-        .json({ categories: rows, totalPage: totalPage(count, 10) });
+        .json({ categories: rows, totalPage: totalPage(count, limit) });
     } catch (error: any) {
       return res.status(500).json({ message: error?.message });
     }
@@ -55,9 +49,9 @@ class CategoryController {
           name: name,
         },
       });
-      if (existedCategory) {
+      if (existedCategory)
         return res.status(409).json({ message: 'Danh mục đã tồn tại!' });
-      }
+
       const createdCategory = await Category.create({
         name: name,
         slug: formatDiacritics(name),
@@ -72,7 +66,7 @@ class CategoryController {
           details: `UserId:${user?.user_id} đã tạo danh mục Id:${createdCategory.category_id}`,
           created_at: formatTime(new Date().toString()),
         });
-        return res.status(200).json({ message: 'Tạo danh mục thành công' });
+        return res.status(200).json({ message: 'Tạo danh mục thành công!' });
       }
     } catch (error: any) {
       return res.status(500).json({ message: error?.message });
@@ -112,7 +106,7 @@ class CategoryController {
     }
   }
   async deleteCategory(req: Request, res: Response) {
-    const user = (req as any)?.decoded as JwtPayload;
+    const user = (req as any)?.decoded as User;
     const { id } = req.params;
     try {
       const deletedCategory = await Category.destroy({

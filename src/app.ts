@@ -5,6 +5,7 @@ import { sequelize } from './config/postgresql';
 import { routerEmployee } from './routes/employee.router';
 import { routerCategory } from './routes/category.router';
 import { routerUser } from './routes/user.router';
+import { routerTag } from './routes/tag.router';
 config();
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ app.use('/public', express.static('public'));
 app.use(routerUser);
 app.use(routerEmployee);
 app.use(routerCategory);
+app.use(routerTag);
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
 });
