@@ -10,6 +10,8 @@ type ProductAttributes = {
   formatPrice: string;
   published: boolean;
   created_by: string | number | null;
+  created_at: string;
+  updated_at: string;
 };
 
 export class Product extends Model<
@@ -23,6 +25,8 @@ export class Product extends Model<
   declare price: number;
   declare published: boolean;
   declare created_by: string | number | null;
+  declare created_at: string;
+  declare updated_at: string;
 }
 
 Product.init(
@@ -66,12 +70,22 @@ Product.init(
       },
       onDelete: 'SET NULL',
     },
+    created_at: {
+      type: new DataTypes.STRING(128),
+      allowNull: true,
+      defaultValue: null,
+    },
+    updated_at: {
+      type: new DataTypes.STRING(128),
+      allowNull: true,
+      defaultValue: null,
+    },
   },
   {
     tableName: 'products',
-    timestamps: true,
+    timestamps: false,
     sequelize,
   }
 );
 
-Product.belongsTo(User, { foreignKey: 'created_by' });
+Product.belongsTo(User, { foreignKey: 'created_by', as: 'userInfo' });

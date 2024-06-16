@@ -4,6 +4,8 @@ type TagAttributes = {
   tag_id: number;
   name: string;
   slug: string;
+  created_at: string;
+  updated_at: string;
 };
 
 export class Tag extends Model<
@@ -13,6 +15,8 @@ export class Tag extends Model<
   declare tag_id: number;
   declare name: string;
   declare slug: string;
+  declare created_at: string;
+  declare updated_at: string;
 }
 
 Tag.init(
@@ -31,10 +35,20 @@ Tag.init(
       type: new DataTypes.STRING(20),
       allowNull: false,
     },
+    created_at: {
+      type: new DataTypes.STRING(128),
+      allowNull: true,
+      defaultValue: null,
+    },
+    updated_at: {
+      type: new DataTypes.STRING(128),
+      allowNull: true,
+      defaultValue: null,
+    },
   },
   {
     tableName: 'tags',
-    timestamps: true,
+    timestamps: false,
     sequelize,
   }
 );

@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from 'express';
+import cors from 'cors';
 import { config } from 'dotenv';
 import { sequelize } from './config/postgresql';
 import { routerEmployee } from './routes/employee.router';
@@ -15,6 +16,8 @@ const port = process.env.PORT || 3000;
     throw Error('Failed to connect postgres');
   }
 })();
+app.use(cors());
+app.use('/public', express.static('public'));
 app.use(routerUser);
 app.use(routerEmployee);
 app.use(routerCategory);

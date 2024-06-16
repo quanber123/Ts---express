@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 
 class ValidateMiddleware {
-  public validateMiddleware(req: Request, res: Response, next: NextFunction) {
+  public async validateMiddleware(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       const formattedErrors: { [key: string]: string } = {};
@@ -14,8 +18,9 @@ class ValidateMiddleware {
       return res
         .status(400)
         .json({ message: 'Not enough information!', errors: formattedErrors });
+    } else {
+      next();
     }
-    next();
   }
 }
 

@@ -8,9 +8,11 @@ type UserAttributes = {
   password: string;
   email: string;
   avatar?: string | null;
-  birthday?: string;
+  birthday?: Date | string | null;
   isVerified?: boolean;
   role: string | number | null;
+  created_at: string;
+  updated_at: string;
 };
 type UserCreationAttributes = Optional<UserAttributes, 'user_id'>;
 export class User extends Model<UserAttributes, UserCreationAttributes> {
@@ -20,8 +22,10 @@ export class User extends Model<UserAttributes, UserCreationAttributes> {
   declare password: string;
   declare email: string;
   declare avatar?: string | null;
-  declare birthday?: string;
+  declare birthday?: Date | string | null;
   declare isVerified?: boolean;
+  declare created_at: string;
+  declare updated_at: string;
 }
 
 User.init(
@@ -63,6 +67,16 @@ User.init(
       allowNull: true,
       defaultValue: null,
     },
+    created_at: {
+      type: new DataTypes.STRING(128),
+      allowNull: true,
+      defaultValue: null,
+    },
+    updated_at: {
+      type: new DataTypes.STRING(128),
+      allowNull: true,
+      defaultValue: null,
+    },
     role: {
       type: DataTypes.BIGINT,
       allowNull: true,
@@ -75,7 +89,7 @@ User.init(
   },
   {
     tableName: 'users',
-    timestamps: true,
+    timestamps: false,
     sequelize,
   }
 );

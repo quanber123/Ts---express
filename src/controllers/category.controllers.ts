@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import { Category } from './../models/category.model';
-import { formatDiacritics, totalPage } from '../utils/helper';
+import { formatDiacritics, formatTime, totalPage } from '../utils/helper';
 import { Op } from 'sequelize';
 import { QueryParams } from '../types/types';
 import { History } from '../models/history.model';
 import { JwtPayload } from 'jsonwebtoken';
+import { User } from '../models/user.model';
 class CategoryController {
   async getCategories(req: Request, res: Response) {
     const { page, search } = req.query;
@@ -39,7 +40,7 @@ class CategoryController {
     }
   }
   async createCategory(req: Request, res: Response) {
-    const user = (req as any)?.decoded as JwtPayload;
+    const user = (req as any)?.decoded as User;
     const { name } = req.body;
     try {
       const existedCategory = await Category.findOne({
@@ -47,18 +48,22 @@ class CategoryController {
           name: name,
         },
       });
-      if (existedCategory)
+      if (existedCategory) {
         return res.status(409).json({ message: 'Danh mục đã tồn tại!' });
+      }
       const createdCategory = await Category.create({
         name: name,
         slug: formatDiacritics(name),
+        created_at: formatTime(new Date().toString()),
+        updated_at: formatTime(new Date().toString()),
       });
       if (createdCategory) {
         await History.create({
           action: 'Tạo',
           userId: user?.user_id,
           target_id: createdCategory.category_id,
-          details: `${user?.user_id} đã tạo danh mục ${createdCategory.category_id}`,
+          details: `UserId:${user?.user_id} đã tạo danh mục Id:${createdCategory.category_id}`,
+          created_at: formatTime(new Date().toString()),
         });
         return res.status(200).json({ message: 'Tạo danh mục thành công' });
       }
@@ -67,6 +72,7 @@ class CategoryController {
     }
   }
   async updateCategory(req: Request, res: Response) {
+    const user = (req as any)?.decoded as User;
     const { name } = req.body;
     const { id } = req.params;
     try {
@@ -74,6 +80,7 @@ class CategoryController {
         {
           name: name,
           slug: formatDiacritics(name),
+          updated_at: formatTime(new Date().toString()),
         },
         {
           where: {
@@ -81,18 +88,18 @@ class CategoryController {
           },
         }
       );
-      console.log(updatedCategory);
-      // if (updatedCategory[0]){
-      //  await History.create({
-      //    action: 'Cập nhật',
-      //    user_id: user?.user_id,
-      //    target_id: Number(id),
-      //    details: `${user?.user_id} đã cập nhật danh mục ${updatedCategory[0].}`,
-      //  });
-      //  return res
-      //    .status(200)
-      //    .json({ message: 'Cập nhật danh mục thành công!' });
-      // }
+      if (updatedCategory[0]) {
+        await History.create({
+          action: 'Cập nhật',
+          userId: user?.user_id,
+          target_id: Number(id),
+          details: `UserId:${user?.user_id} đã cập nhật danh mục Id:${id}`,
+          created_at: formatTime(new Date().toString()),
+        });
+        return res
+          .status(200)
+          .json({ message: 'Cập nhật danh mục thành công!' });
+      }
     } catch (error: any) {
       return res.status(500).json({ message: error?.message });
     }
@@ -112,6 +119,7 @@ class CategoryController {
           userId: user?.user_id,
           target_id: Number(id),
           details: `${user?.user_id} đã xóa danh mục ${id}`,
+          created_at: formatTime(new Date().toString()),
         });
         return res.status(200).json({ message: 'Xóa danh mục thành công!' });
       }

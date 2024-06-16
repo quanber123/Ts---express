@@ -7,6 +7,7 @@ type HistoryAttributes = {
   userId: number | null;
   target_id: number;
   details: string;
+  created_at: string;
 };
 
 export class History extends Model<
@@ -18,6 +19,7 @@ export class History extends Model<
   declare userId: number | null;
   declare target_id: number;
   declare details: string;
+  declare created_at: string;
 }
 
 History.init(
@@ -49,11 +51,16 @@ History.init(
       type: new DataTypes.STRING(1024),
       allowNull: true,
     },
+    created_at: {
+      type: new DataTypes.STRING(128),
+      allowNull: true,
+      defaultValue: null,
+    },
   },
   {
     tableName: 'histories',
-    timestamps: true,
+    timestamps: false,
     sequelize,
   }
 );
-History.belongsTo(User, { foreignKey: 'userId' });
+History.belongsTo(User, { foreignKey: 'userId', as: 'historyInfo' });

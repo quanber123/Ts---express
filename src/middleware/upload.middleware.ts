@@ -29,8 +29,8 @@ class UploadService {
     if (allowedImageExtensions.includes(fileExtension)) {
       const uploadPath =
         process.env.ENVIRONMENT === 'production'
-          ? path.join(__dirname, 'public/uploads')
-          : path.join(__dirname, 'public/test');
+          ? 'public/uploads'
+          : 'public/test';
       // Create directory if it doesn't exist
       fs.mkdirSync(uploadPath, { recursive: true });
       cb(null, uploadPath);
@@ -62,9 +62,9 @@ class UploadService {
     }
   }
 
-  public getUploadMiddleware() {
-    return this.upload;
-  }
+  // public getUploadMiddleware() {
+  //   return this.upload;
+  // }
 
   public getUploadFields() {
     return this.upload.fields([

@@ -7,9 +7,4 @@ export const routerEmployee: Router = Router();
 
 routerEmployee.use(json());
 routerEmployee.get('/api/employees', employeeControllers.getAllEmployees);
-routerEmployee.post(
-  '/api/employees',
-  validate.employeeValidationRules,
-  validateMiddleware.validateMiddleware,
-  employeeControllers.createEmployee
-);
+routerEmployee.post('/api/employees', employeeControllers.createEmployee);
